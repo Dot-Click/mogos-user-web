@@ -8,10 +8,12 @@ import { Input } from "@/components/ui/input"
 // import { FaEyeSlash } from "react-icons/fa";
 import { Button } from "@/components/ui/button"
 import { FiLoader } from "react-icons/fi";
-import { useLocation, useNavigate } from "react-router"
+import { useNavigate } from "react-router"
+import { toast } from "react-hot-toast"
+import { api } from "@/config/axios.config"
 
 const userloginSchema = z.object({
-    PhoneNumber: z.string().min(1, "Número de teléfono requerido"),
+    phoneNumber: z.string().min(1, "Número de teléfono requerido"),
     // OTP: z.string().min(3, "Se requiere OTP")
 })
 type userloginForm = z.infer<typeof userloginSchema>
@@ -19,12 +21,10 @@ type userloginForm = z.infer<typeof userloginSchema>
 const Login = () => {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-    const location = useLocation()
-    console.log(location.pathname)
     const form = useForm<userloginForm>({
         resolver: zodResolver(userloginSchema),
         defaultValues: {
-            PhoneNumber: "",
+            phoneNumber: "",
             // OTP: "",
         }
     })
@@ -33,11 +33,15 @@ const Login = () => {
     const onSubmit = async (data: userloginForm) => {
         setLoading(true)
         try {
-            // Simulate API call
-            console.log("Form submitted:", data)
-            navigate("/otpverify")
-        } catch (error) {
+            const response = await api.post('/auth/login', data)
+            console.log("Form submitted:", response)
+            toast.success("OTP Enviar a tu número de teléfono")
+            setTimeout(() => {
+                navigate("/otpverify")
+            }, 1000)
+        } catch (error: any) {
             console.error("Login failed:", error)
+            toast.error(error.response.data.message)
         } finally {
             setLoading(false)
         }
@@ -61,7 +65,7 @@ const Login = () => {
                                 <div className="space-y-6">
                                     <FormField
                                         control={control}
-                                        name="PhoneNumber"
+                                        name="phoneNumber"
                                         render={({ field, fieldState }) => (
                                             <FormItem>
                                                 <FormLabel className="helvetica-medium text-[#2D2D2D]">

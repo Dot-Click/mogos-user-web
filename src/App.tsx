@@ -3,6 +3,7 @@ import LoginPage from "./pages/login"
 import HomePage from "./pages/Dashboard/Home"
 import AppLayout from "./layout/AppLayout"
 import OtpPage from "./pages/otp"
+import { Toaster } from "react-hot-toast"
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
+      <Toaster position="top-center"/>
     </>
   )
 }

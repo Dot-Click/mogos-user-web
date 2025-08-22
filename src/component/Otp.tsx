@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { api } from "@/config/axios.config"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import { FiLoader } from "react-icons/fi"
 import { useNavigate } from "react-router-dom"
 import z from "zod/v3"
@@ -11,7 +13,7 @@ import z from "zod/v3"
 
 
 const userOtpSchema = z.object({
-    OTP: z.string().min(3, "Se requiere OTP")
+    otp: z.string().min(3, "Se requiere OTP")
 })
 type userOtp = z.infer<typeof userOtpSchema>
 
@@ -21,16 +23,19 @@ const Otp = () => {
     const form = useForm<userOtp>({
         resolver: zodResolver(userOtpSchema),
         defaultValues: {
-            OTP: "",
+            otp: "",
         }
     })
     const { control, handleSubmit, formState: { isSubmitting } } = form
     const onSubmit = async (data: userOtp) => {
         setLoading(true)
         try {
-            // Simulate API call
-            console.log("Form submitted:", data)
-            navigate("/home")
+            const response = await api.post('/auth/verify-otp', data)
+            console.log("Form submitted:", response)
+            toast.success("OTP Correcto")
+            setTimeout(() => {
+                navigate("/home")
+            }, 1000)
         } catch (error) {
             console.error("Login failed:", error)
         } finally {
@@ -48,7 +53,7 @@ const Otp = () => {
                                 <div className="space-y-6">
                                     <FormField
                                         control={control}
-                                        name="OTP"
+                                        name="otp"
                                         render={({ field, fieldState }) => (
                                             <FormItem>
                                                 <FormLabel className="helvetica-medium text-[#2D2D2D]">
