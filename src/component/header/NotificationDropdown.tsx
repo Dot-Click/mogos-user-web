@@ -1,7 +1,9 @@
+import { Dropdown } from "@/components/ui/dropdown/Dropdown";
+// import { DropdownItem } from "@/components/ui/dropdown/DropdownItem";
 import { useState } from "react";
-import { Dropdown } from "../ui/dropdown/Dropdown";
-import { DropdownItem } from "../ui/dropdown/DropdownItem";
-import { useNotification } from "@/store/notification";
+// import { Dropdown } from "../ui/dropdown/Dropdown";
+// import { DropdownItem } from "../ui/dropdown/DropdownItem";
+// import { useNotification } from "@/store/notification";
 // import { Link } from "react-router";
 
 interface NotificationDropdownProps {
@@ -10,7 +12,7 @@ interface NotificationDropdownProps {
 export default function NotificationDropdown({fetchAllNotification }: NotificationDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [notifying, setNotifying] = useState(true);
-  const { notification, page, totalPages, setPagination } = useNotification()
+  // const { notification, page, totalPages, setPagination } = useNotification()
   function toggleDropdown() {
     setIsOpen(!isOpen);
   }
@@ -84,52 +86,52 @@ export default function NotificationDropdown({fetchAllNotification }: Notificati
 
             <ul className="flex flex-col h-auto overflow-y-auto custom-scrollbar">
               {
-                notification.map((item, index) => (
-                  <li key={index}>
-                    <DropdownItem
-                      onItemClick={closeDropdown}
-                      className="flex gap-4 rounded-lg border-b border-gray-100 p-3 px-4.5 py-3 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-white/5"
-                    >
-                      <span className="relative block w-full h-10 rounded-full z-1 max-w-10">
-                        <img
-                          width={40}
-                          height={40}
-                          src="/images/user/user-02.jpg"
-                          alt="User"
-                          className="w-full overflow-hidden rounded-full"
-                        />
-                        <span className="absolute bottom-0 right-0 z-10 h-2.5 w-full max-w-2.5 rounded-full border-[1.5px] border-white bg-success-500 dark:border-gray-900"></span>
-                      </span>
+                // notification.map((item: any, index: number) => (
+                //   <li key={index}>
+                //     <DropdownItem
+                //       onItemClick={closeDropdown}
+                //       className="flex gap-4 rounded-lg border-b border-gray-100 p-3 px-4.5 py-3 hover:bg-gray-100 dark:border-gray-800 dark:hover:bg-white/5"
+                //     >
+                //       <span className="relative block w-full h-10 rounded-full z-1 max-w-10">
+                //         <img
+                //           width={40}
+                //           height={40}
+                //           src="/images/user/user-02.jpg"
+                //           alt="User"
+                //           className="w-full overflow-hidden rounded-full"
+                //         />
+                //         <span className="absolute bottom-0 right-0 z-10 h-2.5 w-full max-w-2.5 rounded-full border-[1.5px] border-white bg-success-500 dark:border-gray-900"></span>
+                //       </span>
 
-                      <span className="block">
-                        <span className="mb-1.5 block text-theme-sm text-gray-500 dark:text-gray-400 space-x-1">
-                          <span className="helvetica-medium text-gray-800 dark:text-white/90 text-[14px]" >
-                            {item.userId?.fullName}
-                          </span>
-                          <div className="flex flex-col">
-                            <span className="helvetica-medium text-gray-800 dark:text-white/90">
-                              {item.title}
-                            </span>
-                            <span className="helvetica-medium text-gray-800 dark:text-white/90">
-                              {item.message}
-                            </span>
-                          </div>
-                        </span>
-                      </span>
-                      <div>
-                      </div>
-                    </DropdownItem>
-                  </li>
-                ))
+                //       <span className="block">
+                //         <span className="mb-1.5 block text-theme-sm text-gray-500 dark:text-gray-400 space-x-1">
+                //           <span className="helvetica-medium text-gray-800 dark:text-white/90 text-[14px]" >
+                //             {item.userId?.fullName}
+                //           </span>
+                //           <div className="flex flex-col">
+                //             <span className="helvetica-medium text-gray-800 dark:text-white/90">
+                //               {item.title}
+                //             </span>
+                //             <span className="helvetica-medium text-gray-800 dark:text-white/90">
+                //               {item.message}
+                //             </span>
+                //           </div>
+                //         </span>
+                //       </span>
+                //       <div>
+                //       </div>
+                //     </DropdownItem>
+                //   </li>
+                // ))
               }
             </ul>
 
-        <div className="flex items-center justify-end space-x-2 mt-3 mb-3">
+        {/* <div className="flex items-center justify-end space-x-2 mt-3 mb-3">
           <button onClick={() => setPagination(page - 1, totalPages)} disabled={page === 1} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50">Prev</button>
           <span>{`page ${page} of ${totalPages}`}</span>
           <button onClick={() => setPagination(page + 1, totalPages)}
             disabled={page === totalPages} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50">Next</button>
-        </div>
+        </div> */}
       </Dropdown>
     </div>
   );
