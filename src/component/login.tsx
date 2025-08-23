@@ -14,7 +14,7 @@ import { api } from "@/config/axios.config"
 
 const userloginSchema = z.object({
     phoneNumber: z.string().min(1, "Número de teléfono requerido"),
-    // OTP: z.string().min(3, "Se requiere OTP")
+    // otp: z.string().min(3, "Se requiere OTP")
 })
 type userloginForm = z.infer<typeof userloginSchema>
 
@@ -25,7 +25,7 @@ const Login = () => {
         resolver: zodResolver(userloginSchema),
         defaultValues: {
             phoneNumber: "",
-            // OTP: "",
+            // otp: "",
         }
     })
     const { control, handleSubmit, formState: { isSubmitting } } = form
@@ -33,15 +33,13 @@ const Login = () => {
     const onSubmit = async (data: userloginForm) => {
         setLoading(true)
         try {
-            const response = await api.post('/auth/login', data)
-            console.log("Form submitted:", response)
-            toast.success("OTP Enviar a tu número de teléfono")
+            await api.post('/api/auth/login', data)
+            toast.success("iniciar sesión exitosamente")
             setTimeout(() => {
                 navigate("/otpverify")
             }, 1000)
         } catch (error: any) {
-            console.error("Login failed:", error)
-            toast.error(error.response.data.message)
+            toast.error("No se pudo enviar OTP")
         } finally {
             setLoading(false)
         }
@@ -82,6 +80,33 @@ const Login = () => {
                                             </FormItem>
                                         )}
                                     />
+                                    {/* <FormField
+                                        control={control}
+                                        name="otp"
+                                        render={({ field, fieldState }) => (
+                                            <FormItem>
+                                                <FormLabel className="helvetica-medium text-[#2D2D2D]">
+                                                    OTP <span className="text-red-500">*</span>{" "}
+                                                </FormLabel>
+                                                <div className="relative">
+                                                    <FormControl>
+                                                        <Input
+                                                            className={`py-5 ${fieldState.error ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                                                            placeholder="Ingresa tu OTP"
+                                                            {...field}
+                                                        />
+                                                    </FormControl>
+                                                    <span
+                                                        className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                                                    >
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center">
+                                                    <FormMessage />
+                                                </div>
+                                            </FormItem>
+                                        )}
+                                    /> */}
                                     <div>
                                         <Button type="submit" disabled={isSubmitting} className="helvetica-medium w-full bg-[#005AA3] hover:bg-[#036bc0] text-white py-5" size="sm">
                                             {loading ? <FiLoader className="animate-spin" /> : "Iniciar sesión"}

@@ -4,6 +4,7 @@ import HomePage from "./pages/Dashboard/Home"
 import AppLayout from "./layout/AppLayout"
 import OtpPage from "./pages/otp"
 import { Toaster } from "react-hot-toast"
+import ProtectedRoute from "./component/ProtectedRoutes"
 
 function App() {
   return (
@@ -12,12 +13,14 @@ function App() {
         <Routes>
           <Route index element={<LoginPage />} />
           <Route path="/otpverify" element={<OtpPage />} />
-          <Route path="/home" element={<AppLayout />}>
-          <Route index element={<HomePage/>} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/home" element={<AppLayout />}>
+              <Route index element={<HomePage />} />
+            </Route>
           </Route>
         </Routes>
       </Router>
-      <Toaster position="top-center"/>
+      <Toaster position="top-center" />
     </>
   )
 }

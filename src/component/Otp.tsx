@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { api } from "@/config/axios.config"
+import { useAuthStore } from "@/store/auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -13,6 +14,7 @@ import z from "zod/v3"
 
 
 const userOtpSchema = z.object({
+    phoneNumber: z.string().min(1, "Número de teléfono requerido"),
     otp: z.string().min(3, "Se requiere OTP")
 })
 type userOtp = z.infer<typeof userOtpSchema>
@@ -23,6 +25,7 @@ const Otp = () => {
     const form = useForm<userOtp>({
         resolver: zodResolver(userOtpSchema),
         defaultValues: {
+            phoneNumber: "",
             otp: "",
         }
     })
@@ -30,14 +33,17 @@ const Otp = () => {
     const onSubmit = async (data: userOtp) => {
         setLoading(true)
         try {
-            const response = await api.post('/auth/verify-otp', data)
-            console.log("Form submitted:", response)
+            const response = await api.post('/api/auth/verify-otp', data)
+            const { token, user } = response.data.data
+            localStorage.setItem("token", token)
+            useAuthStore.getState().setToken(token)
+            useAuthStore.getState().setUser(user)
             toast.success("OTP Correcto")
             setTimeout(() => {
                 navigate("/home")
             }, 1000)
         } catch (error) {
-            console.error("Login failed:", error)
+            toast.error("OTP expirado")
         } finally {
             setLoading(false)
         }
@@ -51,6 +57,25 @@ const Otp = () => {
                         <FormProvider {...form}>
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <div className="space-y-6">
+                                    <FormField
+                                        control={control}
+                                        name="phoneNumber"
+                                        render={({ field, fieldState }) => (
+                                            <FormItem>
+                                                <FormLabel className="helvetica-medium text-[#2D2D2D]">
+                                                    Número de teléfono <span className="text-red-500">*</span>{" "}
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        className={`py-5 ${fieldState.error ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                                                        placeholder="Ingrese su número de teléfono"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage className="text-red-500" />
+                                            </FormItem>
+                                        )}
+                                    />
                                     <FormField
                                         control={control}
                                         name="otp"

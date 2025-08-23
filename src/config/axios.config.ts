@@ -1,24 +1,19 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://mogosburgerappbe-production.up.railway.app/api",
+  baseURL: "https://be.mogos.store/",
   //  baseURL: "http://localhost:8001/api",
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// api.interceptors.request.use((config) => {
-//   const raw = localStorage.getItem("auth");
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
 
-//   if (raw) {
-//     const parsed = JSON.parse(raw); 
-//     const token = parsed?.state?.token;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
 
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//   }
-
-//   return config;
-// });
+  return config;
+});

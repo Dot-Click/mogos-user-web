@@ -1,17 +1,18 @@
 import { useState } from "react";
-// import { Dropdown } from "../ui/dropdown/Dropdown";
 import { Link } from "react-router";
 import { LogOut } from "lucide-react";
 import { Dropdown } from "@/components/ui/dropdown/Dropdown";
-// import { useAuthStore } from "@/store/authStore";
-
+import { useAuthStore } from "@/store/auth";
+import { useNavigate } from "react-router-dom";
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  // const {logout, user} = useAuthStore()
-
-  // const Handlelogout = () => {
-  //   logout()
-  // }
+  const { logout, user } = useAuthStore()
+  const navigate = useNavigate()
+  const Handlelogout = () => {
+    localStorage.removeItem("token")
+    logout()
+    navigate("/")
+  }
   function toggleDropdown() {
     setIsOpen(!isOpen);
   }
@@ -32,7 +33,7 @@ export default function UserDropdown() {
         <span className="block mr-1 helvetica-medium text-[#2D2D2D] text-theme-sm">
           {/* {user?.fullName} */}
           Usuario
-          </span>
+        </span>
         <svg
           className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
             }`}
@@ -60,20 +61,18 @@ export default function UserDropdown() {
         <div>
           <span className="block helvetica-medium text-[#2D2D2D] text-theme-sm dark:text-gray-400">
             {
-              // user?.fullName
-              "Usuario"
+              user?.fullName
             }
           </span>
           <span className="mt-0.5 helvetica-medium text-[#2D2D2D] block text-theme-xs dark:text-gray-400">
             {
-              // user?.email
-              "Usuario@example.com"
+              user?.email
             }
           </span>
         </div>
 
         <Link
-          // onClick={Handlelogout}
+          onClick={Handlelogout}
           to="/"
           className="flex items-center gap-3 px-3 py-2 mt-3 helvetica-medium text-[#2D2D2D] rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
         >
