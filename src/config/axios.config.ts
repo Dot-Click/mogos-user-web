@@ -1,8 +1,10 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://be.mogos.store/",
-  //  baseURL: "http://localhost:8001/api",
+  baseURL:
+    import.meta.env.MODE === "development"
+      ? "http://localhost:8001/" // Local backend
+      : "https://be.mogos.store/",   // Deployed backend
   headers: {
     "Content-Type": "application/json",
   },

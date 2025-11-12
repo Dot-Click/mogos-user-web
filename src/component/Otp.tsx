@@ -34,6 +34,7 @@ const Otp = () => {
         setLoading(true)
         try {
             const response = await api.post('/api/auth/verify-otp', data)
+            console.log(response.data)
             const { token, user } = response.data.data
             localStorage.setItem("token", token)
             useAuthStore.getState().setToken(token)
