@@ -47,10 +47,10 @@ const Home = () => {
     setIsSendingOtp(true);
     try {
       await api.post("/api/auth/resend-otp", { phoneNumber: phoneNumberInput });
-      toast.success("OTP sent to " + phoneNumberInput);
+      toast.success("OTP enviada a " + phoneNumberInput);
     } catch (error: any) {
       console.error("Error sending OTP:", error);
-      toast.error(error.response?.data?.message || "Failed to send OTP.");
+      toast.error(error.response?.data?.message || "No se pudo enviar el código OTP.");
     } finally {
       setIsSendingOtp(false);
     }
@@ -58,11 +58,11 @@ const Home = () => {
 
   const HandleDelete = async () => {
     if (!phoneNumberInput) {
-      toast.error("Please enter your phone number for deletion.");
+      toast.error("Introduzca su número de teléfono para la eliminación.");
       return;
     }
     if (!otpInput) {
-      toast.error("Please enter the OTP.");
+      toast.error("Por favor, introduzca el OTP.");
       return;
     }
 
